@@ -1,6 +1,6 @@
 .title {
         font-size: 48px;
-        color: #4CAF50;
+        color: #fff;
         text-align: center;
         margin-top: 50px;
 }
@@ -25,34 +25,153 @@
 
 #バカラ
 
+*{
+    background: darkgreen;
+}
+
 body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     margin: 0;
+    background: darkgreen;
 }
 
 .game-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     gap: 50px;
     margin-top: 50px;
+}
+
+.player-side, .banker-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    min-width: 510px;  /* 3枚分の幅を確保 (150px * 3 + 10px * 2 + padding) */
+    color: white;
+}
+
+.center-area {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+    top: 150px;
 }
 
 .vs {
     font-size: 3rem;
     font-weight: bold;
+    color: #fff;
 }
 
 .cards {
     display: flex;
     gap: 10px;
+    justify-content: center;
+    min-height: 210px;  /* カードの高さを確保 */
+    align-items: center;
 }
 
 .card {
-    border: 2px solid black;
-    padding: 20px;
+    border: 2px solid #ddd;
+    padding: 5px;
     background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.card img {
+    width: 150px;
+    height: auto;
+    display: block;
+}
+
+.score {
     font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+    margin-top: 10px;
+}
+
+.result {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+.result.win {
+    color: lightgreen;
+}
+
+.result.lose {
+    color: #f44336;
+}
+
+.result.draw {
+    color: #ff9800;
+}
+
+.draw-form {
+    margin-top: 20px;
+}
+
+.draw-button {
+    margin-top: 65px;
+    padding: 15px 30px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #2196F3;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: background-color 0.3s;
+}
+
+.draw-button:hover {
+    background-color: #1976D2;
+}
+
+.replay-button {
+    padding: 15px 30px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #4CAF50;
+    text-decoration: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: background-color 0.3s;
+    display: inline-block;
+    margin-top: 85px;
+}
+
+.replay-button:hover {
+    background-color: #45a049;
+}
+
+.return-top {
+    padding: 15px 30px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #f44336;
+    text-decoration: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: background-color 0.3s;
+    display: inline-block;
+    margin-top: 20px;
+}
+.return-top:hover {
+    background-color: #d32f2f;
 }

@@ -5,23 +5,60 @@
 {% load static %}
     <div class="game-container">
         <div class="player-side">
-            <h2>あなた</h2>
+            <h2>プレイヤー</h2>
             <div class="cards">
                 {% for card in player_cards %}
-                    <div class="card">{{ card.suit }} {{ card.rank }}</div>
+                    <div class="card">
+                        <img src="{{ MEDIA_URL }}image/{{ card.image }}" alt="{{ card.suit }} {{ card.rank }}">
+                    </div>
                 {% endfor %}
             </div>
+            <div class="score">スコア: {{ player_score }}</div>
+            {% if game_over %}
+                {% if winner == 'player' %}
+                    <div class="result win">WIN</div>
+                {% elif winner == 'banker' %}
+                    <div class="result lose">LOSE</div>
+                {% else %}
+                    <div class="result draw">DRAW</div>
+                {% endif %}
+            {% endif %}
         </div>
         
-        <div class="vs">VS</div>
+        <div class="center-area">
+            <div class="vs">VS</div>
+            {% if need_third_card %}
+                <form method="post" class="draw-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="draw">
+                    <button type="submit" class="draw-button">3枚目を引く</button>
+                </form>
+            {% endif %}
+            {% if game_over %}
+                <a href="{% url 'bacarrat' %}" class="replay-button">もう一度プレイ</a>
+                <a href="{% url 'top' %}" class="return-top">タイトルに戻る</a>
+            {% endif %}
+        </div>
         
         <div class="banker-side">
             <h2>バンカー</h2>
             <div class="cards">
                 {% for card in banker_cards %}
-                    <div class="card">{{ card.suit }} {{ card.rank }}</div>
+                    <div class="card">
+                        <img src="{{ MEDIA_URL }}image/{{ card.image }}" alt="{{ card.suit }} {{ card.rank }}">
+                    </div>
                 {% endfor %}
             </div>
+            <div class="score">スコア: {{ banker_score }}</div>
+            {% if game_over %}
+                {% if winner == 'banker' %}
+                    <div class="result win">WIN</div>
+                {% elif winner == 'player' %}
+                    <div class="result lose">LOSE</div>
+                {% else %}
+                    <div class="result draw">DRAW</div>
+                {% endif %}
+            {% endif %}
         </div>
     </div>
 {% endblock content %}
