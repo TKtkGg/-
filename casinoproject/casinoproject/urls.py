@@ -5,7 +5,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('casino.urls')),
+    path('', include('accounts.urls')),
+    path('casino/', include('casino.urls')),
 ]
 
 # 開発環境でメディアファイルを配信

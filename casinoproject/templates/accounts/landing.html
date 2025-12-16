@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}CASINO GAME{% endblock %}
+
+{% block h1 %}CASINO GAME{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
+
+<div class="button-container">
+    <a href="{% url 'signup' %}" class="auth-button signup-button">SignUp</a>
+    <a href="{% url 'login' %}" class="auth-button login-button">LogIn</a>
+</div>
+{% endblock %}

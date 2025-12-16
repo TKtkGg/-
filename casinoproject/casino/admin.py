@@ -1,3 +1,4 @@
 from django.contrib import admin
 
-# Register your models here.
+# Playerモデルは削除されました
+# CustomUserはaccounts/admin.pyで登録されています

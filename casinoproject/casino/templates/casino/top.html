@@ -3,7 +3,11 @@
 {% block h1 %}Card Casino{% endblock h1 %}
 {% block content %}
 {% load static %}
+    <a href="{% url 'logout' %}" class="logout-button">Logout</a>
+    
     <div class="btn">
-        <a href="{% url 'bacarrat' %}" class="bacarrat-button">Bacarrat</a>
+        <a href="{% url 'bacara_bet' %}" class="bacarrat-button">Bacarrat</a>
     </div>
+
+    <h4 class="money">chip：{{ money }}</h4>
 {% endblock content %}

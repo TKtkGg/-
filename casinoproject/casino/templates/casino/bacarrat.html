@@ -5,7 +5,7 @@
 {% load static %}
     <div class="game-container">
         <div class="player-side">
-            <h2>プレイヤー</h2>
+            <h2>Player</h2>
             <div class="cards">
                 {% for card in player_cards %}
                     <div class="card">
@@ -13,7 +13,7 @@
                     </div>
                 {% endfor %}
             </div>
-            <div class="score">スコア: {{ player_score }}</div>
+            <div class="score">Score: {{ player_score }}</div>
             {% if game_over %}
                 {% if winner == 'player' %}
                     <div class="result win">WIN</div>
@@ -35,13 +35,14 @@
                 </form>
             {% endif %}
             {% if game_over %}
-                <a href="{% url 'bacarrat' %}" class="replay-button">もう一度プレイ</a>
-                <a href="{% url 'top' %}" class="return-top">タイトルに戻る</a>
+                <a href="{% url 'bacara_bet' %}" class="replay-button">PLAY AGAIN</a>
+                <a href="{% url 'top' %}" class="return-top">RETURN</a>
+                <h4 class="bet-result">chip{{ origin_money }} → {{ money }}</h4>
             {% endif %}
         </div>
         
         <div class="banker-side">
-            <h2>バンカー</h2>
+            <h2>Banker</h2>
             <div class="cards">
                 {% for card in banker_cards %}
                     <div class="card">
@@ -49,7 +50,7 @@
                     </div>
                 {% endfor %}
             </div>
-            <div class="score">スコア: {{ banker_score }}</div>
+            <div class="score">Score: {{ banker_score }}</div>
             {% if game_over %}
                 {% if winner == 'banker' %}
                     <div class="result win">WIN</div>

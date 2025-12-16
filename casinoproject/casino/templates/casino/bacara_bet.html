@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Casino{% endblock title %}
+{% block h1 %}Baccarat{% endblock h1 %}
+
+{% block content %}
+<div class="bet-content">
+    <h2>いくら賭けますか？</h2>
+    <h3>chip：{{ money }}</h3>
+    <form method="post" class="bet-form">
+        {% csrf_token %}
+        <label>
+            <select name="bet_type" required>
+                <option value="player">Player</option>
+                <option value="banker">Banker</option>
+                <option value="draw">Draw</option>
+            </select>
+        </label>
+        <input type="number" name="bet_amount" min="1" required>
+        <button type="submit" class="bet-button">GAME START</button>
+    </form>
+    <a href="{% url 'top' %}" class="return-top">back</a>
+</div>
+
+{% endblock content %}

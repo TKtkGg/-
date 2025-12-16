@@ -1,6 +1,6 @@
 .title {
         font-size: 48px;
-        color: #fff;
+        color: #FFD700;
         text-align: center;
         margin-top: 50px;
 }
@@ -8,6 +8,13 @@
 .btn{
     display: flex;
     justify-content: center;
+}
+
+.money{
+    font-size: 24px;
+    color: #fff;
+    text-align: center;
+    margin-top: 20px;
 }
 
 .bacarrat-button {
@@ -174,4 +181,62 @@ body {
 }
 .return-top:hover {
     background-color: #d32f2f;
+}
+
+.bet-content {
+    font-size: 20px;
+    color: #fff;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.bet-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.bet-form label,
+.bet-form select,
+.bet-form input[type="number"] {
+    font-size: 18px;
+    padding: 10px;
+    min-width: 200px;
+}
+
+.bet-button {
+    padding: 15px 30px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.bet-button:hover {
+    background-color: #45a049;
+}
+
+.logout-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+    color: rgb(196, 196, 196);
 }

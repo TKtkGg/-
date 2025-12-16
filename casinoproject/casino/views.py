@@ -1,10 +1,14 @@
 import random
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from .trump import TRUMP
+from accounts.models import CustomUser
 
 # Create your views here.
+@login_required
 def top(request):
-    return render(request, 'casino/top.html')
+    player = request.user
+    return render(request, 'casino/top.html',{'money': player.money})
 
 def get_card_value(rank):
     """バカラでのカードの値を取得"""
@@ -47,7 +51,9 @@ def should_draw_third_card(player_score, banker_score, player_third_value=None):
     
     return player_draws, banker_draws
 
+@login_required
 def bacarrat(request):
+    player = request.user
     if request.method == 'POST':
         # 3枚目を引く処理
         action = request.POST.get('action')
@@ -73,15 +79,28 @@ def bacarrat(request):
             
             player_score = calculate_score(player_cards)
             banker_score = calculate_score(banker_cards)
+
+            origin_money = player.money
+            bet_amount = request.session.get('bet_amount', 0)
+            bet_type = request.session.get('bet_type')
             
             # 勝敗判定
             if player_score > banker_score:
                 winner = 'player'
+                player.money += bet_amount if bet_type == 'player' else -bet_amount
             elif banker_score > player_score:
                 winner = 'banker'
+                player.money += bet_amount if bet_type == 'banker' else -bet_amount
             else:
                 winner = 'draw'
+                if bet_type == 'draw':
+                    player.money += bet_amount * 8  # 引き分けの配当
+                else:
+                    player.money -= bet_amount
+            player.save()
             
+            
+
             return render(request, 'casino/bacarrat.html', {
                 'player_cards': player_cards,
                 'banker_cards': banker_cards,
@@ -89,6 +108,8 @@ def bacarrat(request):
                 'banker_score': banker_score,
                 'winner': winner,
                 'game_over': True,
+                'origin_money':origin_money,
+                'money': player.money,
             })
     
     # 初回表示：2枚ずつ配る
@@ -101,7 +122,9 @@ def bacarrat(request):
     
     # 3枚目を引くか判定
     player_draws, banker_draws = should_draw_third_card(player_score, banker_score)
-    
+    bet_amount = request.session.get('bet_amount', 0)
+    bet_type = request.session.get('bet_type')
+    origin_money = player.money
     # 3枚目を引く場合はセッションに保存
     if player_draws or banker_draws:
         request.session['player_cards'] = player_cards
@@ -121,11 +144,20 @@ def bacarrat(request):
         # 3枚目を引かない場合は即決着
         if player_score > banker_score:
             winner = 'player'
+            player.money += bet_amount if bet_type == 'player' else -bet_amount
         elif banker_score > player_score:
             winner = 'banker'
+            player.money += bet_amount if bet_type == 'banker' else -bet_amount
         else:
             winner = 'draw'
+            if bet_type == 'draw':
+                player.money += bet_amount * 8  # 引き分けの配当
+            else:
+                player.money -= bet_amount
+        player.save()
         
+        
+
         return render(request, 'casino/bacarrat.html', {
             'player_cards': player_cards,
             'banker_cards': banker_cards,
@@ -133,4 +165,21 @@ def bacarrat(request):
             'banker_score': banker_score,
             'winner': winner,
             'game_over': True,
+            'origin_money':origin_money,
+            'money': player.money,
         })
+    
+@login_required
+def bacara_bet(request):
+    player = request.user
+    if request.method == 'POST':
+        # ベット金額と種類を取得
+        bet_amount = int(request.POST.get('bet_amount', 0))
+        bet_type = request.POST.get('bet_type')
+        
+        # セッションにベット情報を保存
+        request.session['bet_amount'] = bet_amount
+        request.session['bet_type'] = bet_type
+        
+        return redirect('bacarrat')
+    return render(request, 'casino/bacara_bet.html', {'money': player.money})
