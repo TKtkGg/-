@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Casino{% endblock title %}
+{% block content %}
+{% load static %}
+    <div class="blackjack-container">
+        <!-- ディーラーエリア -->
+        <div class="dealer-area">
+            <h2 class="dealer-name">Dealer</h2>
+            <div class="cards">
+                {% for card in dealer_cards %}
+                    <div class="card">
+                        {% if forloop.counter == 2 and not game_over %}
+                            <!-- 2枚目は裏向き -->
+                            <img src="{{ MEDIA_URL }}image/card_back.png" alt="Hidden Card" style="width: 320px; margin: -80px;">
+                        {% else %}
+                            <img src="{{ MEDIA_URL }}image/{{ card.image }}" alt="{{ card.suit }} {{ card.rank }}">
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="score">
+                {% if game_over %}
+                    Score: {{ dealer_score }}
+                {% else %}
+                    Score: ?
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- プレイヤーエリア -->
+        <div class="player-area">
+            <div class="score">Score: {{ player_score }}</div>
+                <div class="game-controls">
+                {% if not game_over %}
+                    <form method="post" class="action-form">
+                        {% csrf_token %}
+                        <button type="submit" name="action" value="hit" class="action-button hit-button">HIT</button>
+                        <button type="submit" name="action" value="stand" class="action-button stand-button">STAND</button>
+                    </form>
+                {% else %}
+                    {% if result %}
+                        <div class="result-message {{ result }}">
+                            {% if result == 'win' %}
+                                YOU WIN!
+                            {% elif result == 'lose' %}
+                                YOU LOSE
+                            {% elif result == 'blackjack' %}
+                                BLACKJACK!
+                            {% else %}
+                                PUSH
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    <a href="{% url 'blackjack_bet' %}" class="replay-button">PLAY AGAIN</a>
+                    <a href="{% url 'top' %}" class="return-top">RETURN</a>
+                    {% if origin_money and money %}
+                        <h4 class="bet-result">chip{{ origin_money }} → {{ money }}</h4>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="cards">
+                {% for card in player_cards %}
+                    <div class="card">
+                        <img src="{{ MEDIA_URL }}image/{{ card.image }}" alt="{{ card.suit }} {{ card.rank }}">
+                    </div>
+                {% endfor %}
+            </div>
+            <h2>Player</h2>
+        </div>
+
+        <!-- ゲームコントロール -->
+        
+    </div>
+{% endblock %}
+
+    

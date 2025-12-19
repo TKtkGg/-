@@ -8,7 +8,9 @@
 
 .btn{
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .money{
@@ -24,6 +26,19 @@
     font-weight: bold;
     color: #fff;
     background-color: rgba(101, 67, 33, 0.7);
+    text-decoration: none;
+    text-align: center;
+    border-radius: 8px;
+    margin-top: 30px;
+    width: 300px;
+}
+
+.blackjack-button {
+    padding: 15px 30px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.7);
     text-decoration: none;
     text-align: center;
     border-radius: 8px;
@@ -84,14 +99,6 @@ body {
     justify-content: center;
     min-height: 210px;  /* カードの高さを確保 */
     align-items: center;
-}
-
-.card {
-    border: 2px solid #ddd;
-    padding: 5px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .card img {
@@ -271,4 +278,110 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #f0f0f0;
+}
+
+/* Blackjack スタイル */
+.blackjack-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 70vh;
+    gap: 40px;
+}
+
+.dealer-area, .player-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    min-width: 510px;
+}
+
+.dealer-area {
+    margin-bottom: 20px;
+    margin-top: -80px;
+}
+
+.player-area {
+    margin-top: 20px;
+}
+
+.dealer-area h2, .player-area h2 {
+    font-size: 2rem;
+    color: #FFD700;
+    text-align: center;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.game-controls {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    bottom: 230px;
+}
+
+.action-form {
+    display: flex;
+    gap: 20px;
+    
+}
+
+.action-button {
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+}
+
+.hit-button {
+    position: absolute;
+    background-color: #2196F3;
+    left: -315px;
+}
+
+.hit-button:hover {
+    background-color: #1976D2;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+}
+
+.stand-button {
+    position: absolute;
+    background-color: #f44336;
+    right: -350px;
+}
+
+.stand-button:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+}
+
+.result-message {
+    font-size: 3rem;
+    font-weight: bold;
+    padding: 20px 40px;
+    border-radius: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.result-message.win, .result-message.blackjack {
+    color: #4CAF50;
+}
+
+.result-message.lose {
+    color: #f44336;
+}
+
+.result-message.push {
+    color: #ff9800;
 }
