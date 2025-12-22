@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Casino{% endblock title %}
+
+{% block content %}
+{% load static %}
+
+<div class="bet-content">
+    {% block extra_display %}
+    <!-- 罫線などの追加表示（バカラ用） -->
+    {% endblock extra_display %}
+    
+    <h2>いくら賭けますか？</h2>
+    <h3>chip：{{ money }}</h3>
+    
+    <form method="post" class="bet-form">
+        {% csrf_token %}
+        {% block bet_options %}
+        <!-- ベットオプション（各ゲーム固有） -->
+        {% endblock bet_options %}
+        
+        <input type="number" name="bet_amount" min="1" required>
+        <button type="submit" class="bet-button">GAME START</button>
+    </form>
+    <a href="{% url 'top' %}" class="return-top">back</a>
+</div>
+
+{% endblock content %}

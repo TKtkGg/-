@@ -295,7 +295,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    min-width: 510px;
+    width: 100%;
 }
 
 .dealer-area {
@@ -315,19 +315,25 @@ body {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.game-controls {
-    position: absolute;
+.player-game-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+    min-height: 250px;
+}
+
+.left-button, .right-button {
+    display: flex;
+    align-items: center;
+}
+
+.center-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-    bottom: 230px;
-}
-
-.action-form {
-    display: flex;
-    gap: 20px;
-    
+    gap: 15px;
 }
 
 .action-button {
@@ -343,9 +349,7 @@ body {
 }
 
 .hit-button {
-    position: absolute;
     background-color: #2196F3;
-    left: -315px;
 }
 
 .hit-button:hover {
@@ -355,9 +359,7 @@ body {
 }
 
 .stand-button {
-    position: absolute;
     background-color: #f44336;
-    right: -350px;
 }
 
 .stand-button:hover {
@@ -366,22 +368,78 @@ body {
     box-shadow: 0 6px 8px rgba(0,0,0,0.3);
 }
 
+.bj-replay-button, .bj-return-top {
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+.bj-replay-button {
+    background-color: #4CAF50;
+}
+
+.bj-replay-button:hover {
+    background-color: #45a049;
+}
+
+.bj-return-top {
+    background-color: #f44336;
+}
+
+.bj-return-top:hover {
+    background-color: #d32f2f;
+}
+
 .result-message {
+    position: absolute;
     font-size: 3rem;
     font-weight: bold;
     padding: 20px 40px;
     border-radius: 10px;
+    bottom: 45%;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    left: 42.5%;
 }
 
-.result-message.win, .result-message.blackjack {
-    color: #4CAF50;
+.result-message .chip-display {
+    font-size: 2rem;
+    color: #000;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
 }
 
-.result-message.lose {
+.result-message.blackjack {
+    color: #FFD700;
+    font-size: 3.5rem;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.5);
+    animation: glow 1.5s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% {
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 40px rgba(255, 215, 0, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+}
+
+.result-message.player{
+    color: lightgreen;
+}
+
+.result-message.dealer {
     color: #f44336;
 }
 
-.result-message.push {
+.result-message.draw {
     color: #ff9800;
 }

@@ -30,40 +30,56 @@
         <!-- プレイヤーエリア -->
         <div class="player-area">
             <div class="score">Score: {{ player_score }}</div>
-                <div class="game-controls">
-                {% if not game_over %}
-                    <form method="post" class="action-form">
-                        {% csrf_token %}
-                        <button type="submit" name="action" value="hit" class="action-button hit-button">HIT</button>
-                        <button type="submit" name="action" value="stand" class="action-button stand-button">STAND</button>
-                    </form>
-                {% else %}
-                    {% if result %}
-                        <div class="result-message {{ result }}">
-                            {% if result == 'win' %}
-                                YOU WIN!
-                            {% elif result == 'lose' %}
-                                YOU LOSE
-                            {% elif result == 'blackjack' %}
-                                BLACKJACK!
-                            {% else %}
-                                PUSH
+            <div class="player-game-area">
+                <div class="left-button">
+                    {% if not game_over %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="action" value="hit" class="action-button hit-button">HIT</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'blackjack_bet' %}" class="bj-replay-button action-button">PLAY AGAIN</a>
+                    {% endif %}
+                </div>
+                <div class="center-content">
+                    {% if game_over and winner %}
+                        <div class="result-message {{ winner }}">
+                            <span class="result-text">
+                                {% if winner == 'blackjack' %}
+                                    BLACKJACK!
+                                {% elif winner == 'player' %}
+                                    WIN
+                                {% elif winner == 'dealer' %}
+                                    LOSE
+                                {% elif winner == 'draw' %}
+                                    DRAW
+                                {% else %}
+                                    PUSH
+                                {% endif %}
+                            </span>
+                            {% if origin_money and money %}
+                                <span class="chip-display">chip{{ origin_money }} → {{ money }}</span>
                             {% endif %}
                         </div>
                     {% endif %}
-                    <a href="{% url 'blackjack_bet' %}" class="replay-button">PLAY AGAIN</a>
-                    <a href="{% url 'top' %}" class="return-top">RETURN</a>
-                    {% if origin_money and money %}
-                        <h4 class="bet-result">chip{{ origin_money }} → {{ money }}</h4>
-                    {% endif %}
-                {% endif %}
-            </div>
-            <div class="cards">
-                {% for card in player_cards %}
-                    <div class="card">
-                        <img src="{{ MEDIA_URL }}image/{{ card.image }}" alt="{{ card.suit }} {{ card.rank }}">
+                    <div class="cards">
+                        {% for card in player_cards %}
+                            <div class="card">
+                                <img src="{{ MEDIA_URL }}image/{{ card.image }}" alt="{{ card.suit }} {{ card.rank }}">
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
+                </div>
+                <div class="right-button">
+                    {% if not game_over %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="action" value="stand" class="action-button stand-button">STAND</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'top' %}" class="bj-return-top action-button">RETURN</a>
+                    {% endif %}
+                </div>
             </div>
             <h2>Player</h2>
         </div>
