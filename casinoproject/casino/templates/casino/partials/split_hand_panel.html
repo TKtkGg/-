@@ -1,0 +1,60 @@
+{% if hand %}
+<div class="split-hand-panel">
+    <div class="split-hand-inner">
+        <div class="split-action-slot">
+            {% if not game_over and not split_complete and hand.status == 'playing' %}
+                <form method="post" class="split-action-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="hand_index" value="{{ hand_index }}">
+                    <button type="submit" name="action" value="split_hit" class="action-button hit-button split-action-button">HIT</button>
+                </form>
+            {% else %}
+                <div class="split-button-placeholder"></div>
+            {% endif %}
+        </div>
+        <div class="split-hand-body">
+            <div class="split-hand-label">{{ hand_label }}</div>
+            <div class="split-hand-score">Score: {{ hand.score }}</div>
+            {% if hand.result %}
+                <div class="hand-result {{ hand.result }}">
+                    {% if hand.result == 'blackjack' %}
+                        BLACKJACK
+                    {% elif hand.result == 'player' %}
+                        WIN
+                    {% elif hand.result == 'dealer' %}
+                        LOSE
+                    {% elif hand.result == 'draw' %}
+                        DRAW
+                    {% endif %}
+                </div>
+            {% else %}
+                {% if hand.status == 'standing' %}
+                    <div class="hand-status standing">STANDING...</div>
+                {% elif hand.status == 'bust' %}
+                    <div class="hand-status bust">BURST</div>
+                {% elif hand.status == 'blackjack' %}
+                    <div class="hand-status blackjack">BLACKJACK</div>
+                {% endif %}
+            {% endif %}
+            <div class="cards split-hand-cards" data-count="{{ hand.cards|length }}">
+                {% for card in hand.cards %}
+                    <div class="card">
+                        <img src="{{ MEDIA_URL }}image/{{ card.image }}" alt="{{ card.suit }} {{ card.rank }}">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="split-action-slot">
+            {% if not game_over and not split_complete and hand.status == 'playing' %}
+                <form method="post" class="split-action-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="hand_index" value="{{ hand_index }}">
+                    <button type="submit" name="action" value="split_stand" class="action-button stand-button split-action-button">STAND</button>
+                </form>
+            {% else %}
+                <div class="split-button-placeholder"></div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}

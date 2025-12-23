@@ -3,14 +3,29 @@
 {% block content %}
 {% load static %}
     <div class="blackjack-container">
+        {% if split_prompt and not game_over %}
+            <div class="split-prompt">
+                <p>スプリッティングペアーズをしますか？</p>
+                <div class="split-prompt-actions">
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" name="action" value="split_yes" class="split-choice-button">YES</button>
+                    </form>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" name="action" value="split_no" class="split-choice-button ghost">NO</button>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
         <!-- ディーラーエリア -->
         <div class="dealer-area">
             <h2 class="dealer-name">Dealer</h2>
             <div class="cards">
                 {% for card in dealer_cards %}
                     <div class="card">
-                        {% if forloop.counter == 2 and not game_over %}
-                            <!-- 2枚目は裏向き -->
+                        {% if forloop.counter == 2 and not game_over and not split_complete %}
+                            <!-- 2枚目は裏向き（ただしスプリット決着後は全て表示） -->
                             <img src="{{ MEDIA_URL }}image/card_back.png" alt="Hidden Card" style="width: 320px; margin: -80px;">
                         {% else %}
                             <img src="{{ MEDIA_URL }}image/{{ card.image }}" alt="{{ card.suit }} {{ card.rank }}">
@@ -19,29 +34,35 @@
                 {% endfor %}
             </div>
             <div class="score">
-                {% if game_over %}
+                {% if game_over or split_complete %}
                     Score: {{ dealer_score }}
                 {% else %}
                     Score: ?
                 {% endif %}
             </div>
         </div>
-
+        {% if split_complete and origin_money and money or game_over and origin_money and money %}
+            <div class="split-chip-display">chip{{ origin_money }} → {{ money }}</div>
+        {% endif %}
         <!-- プレイヤーエリア -->
         <div class="player-area">
-            <div class="score">Score: {{ player_score }}</div>
+            {% if not split_active %}
+                <div class="score">Score: {{ player_score }}</div>
+            {% endif %}
             <div class="player-game-area">
-                <div class="left-button">
-                    {% if not game_over %}
-                        <form method="post">
-                            {% csrf_token %}
-                            <button type="submit" name="action" value="hit" class="action-button hit-button">HIT</button>
-                        </form>
-                    {% else %}
-                        <a href="{% url 'blackjack_bet' %}" class="bj-replay-button action-button">PLAY AGAIN</a>
-                    {% endif %}
-                </div>
-                <div class="center-content">
+                {% if not split_active %}
+                    <div class="left-button">
+                        {% if not game_over %}
+                            <form method="post">
+                                {% csrf_token %}
+                                <button type="submit" name="action" value="hit" class="action-button hit-button">HIT</button>
+                            </form>
+                        {% else %}
+                            <a href="{% url 'blackjack_bet' %}" class="bj-replay-button action-button">PLAY AGAIN</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                <div class="center-content {% if split_active %}split-mode{% endif %}">
                     {% if game_over and winner %}
                         <div class="result-message {{ winner }}">
                             <span class="result-text">
@@ -53,6 +74,8 @@
                                     LOSE
                                 {% elif winner == 'draw' %}
                                     DRAW
+                                {% elif winner == 'split' %}
+                                    SPLIT RESULT
                                 {% else %}
                                     PUSH
                                 {% endif %}
@@ -62,24 +85,51 @@
                             {% endif %}
                         </div>
                     {% endif %}
-                    <div class="cards">
-                        {% for card in player_cards %}
-                            <div class="card">
-                                <img src="{{ MEDIA_URL }}image/{{ card.image }}" alt="{{ card.suit }} {{ card.rank }}">
+
+                    {% if split_active %}
+                        {% with left_hand=split_hands.0 right_hand=split_hands.1 %}
+                        <div class="split-stage">
+                            <div class="split-layout">
+                                
+                                {% include 'casino/partials/split_hand_panel.html' with hand=left_hand hand_index=0 hand_label='左ハンド' %}
+                                <div class="split-middle-panel">
+                                    {% if winner == 'split' and game_over %}
+                                        <div class="split-middle-result">スプリット結果</div>
+                                    {% endif %}
+                                    {% if split_active and split_complete or split_active and game_over %}
+                                        <div class="split-finish-actions stacked">
+                                            <a href="{% url 'blackjack_bet' %}" class="bj-replay-button action-button">PLAY AGAIN</a>
+                                            <a href="{% url 'top' %}" class="bj-return-top action-button">RETURN</a>
+                                        </div>
+                                    {% endif %}
+                                    
+                                </div>
+                                {% include 'casino/partials/split_hand_panel.html' with hand=right_hand hand_index=1 hand_label='右ハンド' %}
                             </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="right-button">
-                    {% if not game_over %}
-                        <form method="post">
-                            {% csrf_token %}
-                            <button type="submit" name="action" value="stand" class="action-button stand-button">STAND</button>
-                        </form>
+                        </div>
+                        {% endwith %}
                     {% else %}
-                        <a href="{% url 'top' %}" class="bj-return-top action-button">RETURN</a>
+                        <div class="cards">
+                            {% for card in player_cards %}
+                                <div class="card">
+                                    <img src="{{ MEDIA_URL }}image/{{ card.image }}" alt="{{ card.suit }} {{ card.rank }}">
+                                </div>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                 </div>
+                {% if not split_active %}
+                    <div class="right-button">
+                        {% if not game_over %}
+                            <form method="post">
+                                {% csrf_token %}
+                                <button type="submit" name="action" value="stand" class="action-button stand-button">STAND</button>
+                            </form>
+                        {% else %}
+                            <a href="{% url 'top' %}" class="bj-return-top action-button">RETURN</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
             </div>
             <h2>Player</h2>
         </div>

@@ -288,6 +288,8 @@ body {
     justify-content: space-between;
     min-height: 70vh;
     gap: 40px;
+    position: relative;
+    width: 100%;
 }
 
 .dealer-area, .player-area {
@@ -369,12 +371,13 @@ body {
 }
 
 .bj-replay-button, .bj-return-top {
-    padding: 15px 30px;
+    padding: 10px 10px;
     font-size: 18px;
     font-weight: bold;
     color: #fff;
     text-decoration: none;
     border-radius: 8px;
+    text-align: center;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     transition: all 0.3s;
     display: inline-block;
@@ -442,4 +445,297 @@ body {
 
 .result-message.draw {
     color: #ff9800;
+}
+
+.result-message.split {
+    color: #4dd0e1;
+}
+
+
+.split-prompt {
+    position: fixed;
+    top: 30px;
+    right: 40px;
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.95), rgba(60, 60, 60, 0.85));
+    padding: 18px 26px;
+    border-radius: 16px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    font-family: "Georgia", "Times New Roman", serif;
+    z-index: 20;
+}
+
+.split-prompt p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+}
+
+.split-prompt-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.split-choice-button {
+    padding: 10px 24px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(120deg, #ff9800, #ff5722);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.45);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    letter-spacing: 0.12em;
+}
+
+.split-choice-button.ghost {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.8);
+    color: #fff;
+}
+
+.split-choice-button:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+}
+
+.split-score-label {
+    letter-spacing: 0.15em;
+    color: #FFD700;
+    text-transform: uppercase;
+}
+
+.center-content.split-mode {
+    width: 100%;
+}
+
+.split-stage {
+    width: 100%;
+}
+
+.split-layout {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr minmax(170px, 220px) 1fr;
+    gap: 24px;
+    align-items: stretch;
+}
+
+.split-hand-panel {
+    display: flex;
+    justify-content: center;
+}
+
+.split-hand-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 18px 24px;
+    border-radius: 18px;
+    min-height: 280px;
+    width: 100%;
+}
+
+.split-action-slot {
+    width: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.split-button-placeholder {
+    width: 100%;
+    height: 54px;
+}
+
+.split-hand-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 240px;
+}
+
+.split-hand-label {
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.split-hand-score {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.split-hand-cards {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 10px;
+    min-height: 120px;
+    width: 100%;
+    transition: gap 0.2s, min-height 0.2s;
+}
+
+.split-hand-cards .card {
+    transition: width 0.2s, height 0.2s, margin 0.2s;
+}
+
+/* カード枚数に応じて自動でサイズ・間隔を調整 */
+.split-hand-cards[data-count="2"] .card img {
+    width: 120px;
+}
+.split-hand-cards[data-count="3"] .card img {
+    width: 100px;
+}
+.split-hand-cards[data-count="4"] .card img {
+    width: 85px;
+}
+.split-hand-cards[data-count="5"] .card img {
+    width: 70px;
+}
+.split-hand-cards[data-count="6"] .card img {
+    width: 60px;
+}
+.split-hand-cards[data-count="7"] .card img {
+    width: 50px;
+}
+.split-hand-cards[data-count="8"] .card img {
+    width: 44px;
+}
+.split-hand-cards[data-count="9"],
+.split-hand-cards[data-count="10"] {
+    gap: 4px;
+}
+.split-hand-cards[data-count="9"] .card img,
+.split-hand-cards[data-count="10"] .card img {
+    width: 38px;
+}
+
+.hand-status,
+.hand-result {
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    padding: 8px 18px;
+    border-radius: 999px;
+    text-transform: uppercase;
+}
+
+.hand-status.standing {
+    color: #00e676;
+    border: 1px solid rgba(0, 230, 118, 0.5);
+}
+
+.hand-status.bust {
+    color: #ff5252;
+    border: 1px solid rgba(255, 82, 82, 0.5);
+}
+
+.hand-status.blackjack {
+    color: #FFD700;
+    border: 1px solid rgba(255, 215, 0, 0.6);
+}
+
+.hand-result.player {
+    color: lightgreen;
+}
+
+.hand-result.dealer {
+    color: #ff5252;
+}
+
+.hand-result.draw {
+    color: #ffb300;
+}
+
+.hand-result.blackjack {
+    color: #FFD700;
+}
+
+.split-action-button {
+    padding: 12px 28px;
+    font-size: 16px;
+}
+
+.split-action-form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.split-middle-panel {
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    min-height: 280px;
+}
+
+.split-middle-result {
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    color: #FFD700;
+    text-transform: uppercase;
+}
+
+.split-middle-result.waiting {
+    color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.1em;
+}
+
+.split-chip-display {
+    font-size: 2.1rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: -100px;
+}
+
+.split-finish-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+.split-finish-actions.stacked {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+}
+
+@media (max-width: 960px) {
+    .split-prompt {
+        position: static;
+        margin-top: -10px;
+        width: calc(100% - 40px);
+    }
+
+    .split-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .split-middle-panel {
+        order: -1;
+        min-height: auto;
+        margin-bottom: 20px;
+    }
+
+    .split-hand-inner {
+        flex-direction: column;
+    }
+
+    .split-action-slot {
+        width: 100%;
+    }
 }
