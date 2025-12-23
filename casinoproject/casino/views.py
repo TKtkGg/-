@@ -13,6 +13,7 @@ from .blackjack import Blackjack
 @login_required
 def top(request):
     player = request.user
+    bj = Blackjack()
     return render(request, 'casino/top.html',{'money': player.money})
 
 class BaccaratGameView(LoginRequiredMixin, Baccarat, View):

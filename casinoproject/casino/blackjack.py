@@ -8,6 +8,8 @@ from .trump import TRUMP
 class Blackjack:
     """ブラックジャックゲームのロジッククラス"""
 
+    
+
     SPLIT_COMPLETE_STATES = {'standing', 'bust', 'blackjack'}
 
     @staticmethod
@@ -153,7 +155,7 @@ class Blackjack:
             return render(request, 'casino/blackjack.html', context)
         
         # 新しいゲームの開始：デバッグ用で必ずプレイヤーに10を2枚配る
-        tens = [card for card in TRUMP if card['rank'] == 1]
+        tens = [card for card in TRUMP if card['rank'] == 2]
         player_cards = [tens[0], tens[1]]
         rest = [card for card in TRUMP if card not in player_cards]
         dealer_cards = random.sample(rest, 2)

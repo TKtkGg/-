@@ -41,7 +41,7 @@
                 {% endif %}
             </div>
         </div>
-        {% if split_complete and origin_money and money or game_over and origin_money and money %}
+        {% if split_active and split_complete and origin_money and money or split_active and game_over and origin_money and money %}
             <div class="split-chip-display">chip{{ origin_money }} → {{ money }}</div>
         {% endif %}
         <!-- プレイヤーエリア -->
@@ -63,7 +63,7 @@
                     </div>
                 {% endif %}
                 <div class="center-content {% if split_active %}split-mode{% endif %}">
-                    {% if game_over and winner %}
+                    {% if game_over and winner and not split_active %}
                         <div class="result-message {{ winner }}">
                             <span class="result-text">
                                 {% if winner == 'blackjack' %}
@@ -74,8 +74,6 @@
                                     LOSE
                                 {% elif winner == 'draw' %}
                                     DRAW
-                                {% elif winner == 'split' %}
-                                    SPLIT RESULT
                                 {% else %}
                                     PUSH
                                 {% endif %}
